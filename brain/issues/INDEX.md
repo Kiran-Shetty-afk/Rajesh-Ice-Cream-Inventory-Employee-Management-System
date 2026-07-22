@@ -19,15 +19,17 @@
 
 | Category | Count |
 |----------|-------|
-| Active issues | 3 |
-| Completed | 0 |
+| Active issues | 0 |
+| Completed | 3 |
 | **Total** | **3** |
 
 ## Completed Issues
 
 | ID | Title | Completed |
 |----|-------|-----------|
-| _none yet_ | | |
+| 001 | Raw error details returned to client in server actions | 2026-07-22 |
+| 002 | Missing test coverage for all core areas | 2026-07-22 |
+| 003 | Missing return type annotations on exported functions | 2026-07-22 |
 
 ## Active Issues by Priority
 
@@ -47,9 +49,7 @@
 
 | ID | Title |
 |----|-------|
-| 001 | Raw error details returned to client in server actions |
-| 002 | Missing test coverage for all core areas |
-| 003 | Missing return type annotations on exported functions |
+| _none_ | |
 
 ## Issue Structure
 

@@ -4,7 +4,8 @@ title: Missing return type annotations on exported functions
 severity: P2
 area: dx
 source: kenmark-issues-scan
-status: open
+status: completed
+completed: 2026-07-22
 created: 2026-07-22
 files:
   - app/actions/backup.ts

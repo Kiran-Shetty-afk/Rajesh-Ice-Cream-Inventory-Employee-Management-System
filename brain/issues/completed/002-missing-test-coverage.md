@@ -4,7 +4,8 @@ title: Missing test coverage for all core areas
 severity: P2
 area: testing
 source: kenmark-issues-scan
-status: open
+status: completed
+completed: 2026-07-22
 created: 2026-07-22
 files:
   - app/

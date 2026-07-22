@@ -4,7 +4,8 @@ title: Raw error details returned to client in server actions
 severity: P2
 area: security
 source: kenmark-issues-scan
-status: open
+status: completed
+completed: 2026-07-22
 created: 2026-07-22
 files:
   - app/actions/employees.ts

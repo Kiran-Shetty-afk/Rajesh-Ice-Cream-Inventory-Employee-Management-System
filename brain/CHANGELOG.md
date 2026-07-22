@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [2026-07-22] - Issue Sweeps and Quality Updates
+
+- **Testing**: Added Vitest and React Testing Library setup. Added baseline tests for utilities and components.
+- **Security**: Prevented raw database error leaks by returning generic errors in server actions.
+- **DX**: Added strict return type definitions for Page components and server actions.
+
 ## v2026.07.12-kenmark-init
 
 - Initialized Kenmark `brain/` scaffold with modular rules, numbered KB files, issue tracker, and plan tracker.
@@ -8,3 +14,4 @@
 
 ## v2026.07.12-1413-kb-sync
 - KB: updated 06-ui-and-routes, 05-api-and-integrations, 09-infra-and-deployment for full production UI CRUD implementation, backup scripts, and Electron integration.
+

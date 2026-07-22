@@ -27,3 +27,9 @@ Status: draft
 ## Maintenance notes
 
 - Update this file when adding test tooling, QA workflows, or quality gates.
+
+## Unit and Component Testing
+
+Vitest and @testing-library/react are used for tests. Run tests via 
+pm run test. Configuration is in itest.config.ts. Tests are co-located with files (e.g. ile.test.ts).
+

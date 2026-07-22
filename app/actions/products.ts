@@ -52,11 +52,16 @@ export async function updateProduct(id: string, data: z.infer<typeof productSche
   }
 }
 
-export async function deactivateProduct(id: string): Promise<{ success?: boolean; error?: any }> {
+export async function toggleProductStatus(id: string): Promise<{ success?: boolean; error?: any }> {
   try {
+    const product = await prisma.product.findUnique({ where: { id } });
+    if (!product) return { error: "Product not found" };
+
+    const newStatus = product.status === "INACTIVE" ? "ACTIVE" : "INACTIVE";
+
     await prisma.product.update({
       where: { id },
-      data: { status: "INACTIVE" },
+      data: { status: newStatus },
     });
     revalidatePath("/inventory");
     return { success: true };

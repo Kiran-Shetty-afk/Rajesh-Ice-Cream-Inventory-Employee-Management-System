@@ -122,9 +122,22 @@ model Employee {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   loans         EmployeeLoan[]
+  exitLogs      EmployeeExitLog[]
 
   @@index([name])
   @@index([status])
+}
+
+model EmployeeExitLog {
+  id              String   @id @default(cuid())
+  employeeId      String
+  exitDate        DateTime @default(now())
+  remainingLoan   Float
+  notes           String?
+  createdAt       DateTime @default(now())
+  employee        Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  
+  @@index([exitDate])
 }
 
 model EmployeeLoan {

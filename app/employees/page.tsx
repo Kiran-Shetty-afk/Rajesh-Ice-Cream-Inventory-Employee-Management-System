@@ -4,7 +4,8 @@ import { money, salarySummary } from "@/lib/finance";
 import { prisma } from "@/lib/prisma";
 import { EmployeeDialog } from "@/components/EmployeeForm";
 import { EmployeeLoanDialog } from "@/components/EmployeeLoanForm";
-import { Edit } from "lucide-react";
+import { Edit, Power } from "lucide-react";
+import { toggleEmployeeStatus } from "@/app/actions/employees";
 
 export const dynamic = "force-dynamic";
 
@@ -59,7 +60,7 @@ export default async function EmployeesPage(): Promise<React.ReactElement> {
                     <td className="px-4 py-3 text-right text-rose-600 font-medium">{money(summary.totalLoan)}</td>
                     <td className="px-4 py-3 text-right font-bold text-ink">{money(summary.currentBalance)}</td>
                     <td className="px-4 py-3 text-right">
-                      <div className="flex items-center justify-end gap-3">
+                      <div className="flex items-center justify-end gap-1">
                         <EmployeeLoanDialog employeeId={employee.id} />
                         <EmployeeDialog 
                           employee={employee} 
@@ -69,6 +70,11 @@ export default async function EmployeesPage(): Promise<React.ReactElement> {
                             </button>
                           } 
                         />
+                        <form action={toggleEmployeeStatus.bind(null, employee.id) as any}>
+                          <button type="submit" className="icon-button" title={employee.status === "ACTIVE" ? "Mark Inactive (Log Exit)" : "Mark Active"}>
+                            <Power className={`w-4 h-4 ${employee.status === "ACTIVE" ? "text-rose-500" : "text-emerald-500"}`} />
+                          </button>
+                        </form>
                       </div>
                     </td>
                   </tr>

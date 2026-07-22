@@ -4,8 +4,8 @@
 
 | Field | Value |
 |------|-------|
-| Last Assigned ID | 007 |
-| Next ID | 008 |
+| Last Assigned ID | 008 |
+| Next ID | 009 |
 
 ## Ledger Rules
 
@@ -19,9 +19,9 @@
 
 | Category | Count |
 |----------|-------|
-| Active plans | 2 |
+| Active plans | 3 |
 | Completed | 2 |
-| **Total** | **4** |
+| **Total** | **5** |
 
 ## Completed Plans
 
@@ -38,6 +38,7 @@
 |----|-------|------|
 | 005 | Project Enhancement and Feature Roadmap Options | dig-deep |
 | 007 | Production Release Final Sprint (Auth, Packaging, CRUD) | full-feature |
+| 008 | Entity Activation Toggling and Employee Exit Logging | full-feature |
 
 ### Approved
 

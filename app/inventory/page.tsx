@@ -4,7 +4,8 @@ import { money } from "@/lib/finance";
 import { prisma } from "@/lib/prisma";
 import { ProductDialog } from "@/components/ProductForm";
 import { RawMaterialDialog } from "@/components/RawMaterialForm";
-import { Edit } from "lucide-react";
+import { Edit, Power } from "lucide-react";
+import { toggleProductStatus } from "@/app/actions/products";
 
 export const dynamic = "force-dynamic";
 
@@ -60,20 +61,27 @@ export default async function InventoryPage(): Promise<React.ReactElement> {
                           Low Stock
                         </span>
                       ) : (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-800">
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${product.status === "ACTIVE" ? "bg-emerald-100 text-emerald-800" : "bg-gray-100 text-gray-800"}`}>
                           {product.status}
                         </span>
                       )}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <ProductDialog 
-                        product={product} 
-                        trigger={
-                          <button className="icon-button" title="Edit" aria-label={`Edit ${product.name}`}>
-                            <Edit className="w-4 h-4" />
+                      <div className="flex justify-end items-center gap-1">
+                        <ProductDialog 
+                          product={product} 
+                          trigger={
+                            <button className="icon-button" title="Edit" aria-label={`Edit ${product.name}`}>
+                              <Edit className="w-4 h-4" />
+                            </button>
+                          } 
+                        />
+                        <form action={toggleProductStatus.bind(null, product.id) as any}>
+                          <button type="submit" className="icon-button" title={product.status === "ACTIVE" ? "Mark Inactive" : "Mark Active"}>
+                            <Power className={`w-4 h-4 ${product.status === "ACTIVE" ? "text-rose-500" : "text-emerald-500"}`} />
                           </button>
-                        } 
-                      />
+                        </form>
+                      </div>
                     </td>
                   </tr>
                 );

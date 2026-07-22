@@ -52,12 +52,40 @@ export async function updateEmployee(id: string, data: z.infer<typeof employeeSc
   }
 }
 
-export async function deactivateEmployee(id: string): Promise<{ success?: boolean; error?: any }> {
+export async function toggleEmployeeStatus(id: string): Promise<{ success?: boolean; error?: any }> {
   try {
-    await prisma.employee.update({
+    const employee = await prisma.employee.findUnique({
       where: { id },
-      data: { status: "INACTIVE" },
+      include: { loans: true }
     });
+    
+    if (!employee) return { error: "Employee not found." };
+
+    const newStatus = employee.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
+
+    await prisma.$transaction(async (tx) => {
+      await tx.employee.update({
+        where: { id },
+        data: { status: newStatus },
+      });
+
+      if (newStatus === "INACTIVE") {
+        // Calculate remaining loan balance
+        const totalLoan = employee.loans.reduce((sum, loan) => sum + loan.amount, 0);
+        // We do not log total salary here, just the pure remaining loan balance
+        // To be precise, if they haven't paid off the loan, the balance is totalLoan.
+        // If we want the full finance balance (salary minus loan), we could use salarySummary.
+        // For now we just store totalLoan as requested ("remaining loan amount").
+        await tx.employeeExitLog.create({
+          data: {
+            employeeId: id,
+            remainingLoan: totalLoan,
+            notes: "Automatically logged upon marking INACTIVE."
+          }
+        });
+      }
+    });
+
     revalidatePath("/employees");
     return { success: true };
   } catch (err: any) {

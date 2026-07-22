@@ -36,33 +36,43 @@ npm run prisma:studio   # Browse and edit local database records
 npm run build           # Build Next.js and Electron TypeScript
 ```
 
-## Current Modules
+## Features & Core Logic
 
-- Dashboard summary cards
-- Factory product inventory
-- Raw material inventory
-- Shop-wise stock view
-- Factory to shop transfer history foundation
-- Employee salary, bonus, loan, and balance calculations
-- Report catalog for PDF, print, and Excel workflows
-- Analytics summary page
-- Backup and security settings page
-- Global Command Palette (`Ctrl+K`) for fast cross-entity search
-- Unified Operations Calendar for tracking sales, wastage, transfers, and loans
-- Print-optimized receipt layouts for purchase and transfer invoices
-- Robust Dark/Light mode theming system
+### 1. Dashboard & Analytics
+- **Feature**: Real-time overview of the business.
+- **Logic**: Aggregates total stock value, monthly sales revenue, total expenses, and active loans. Uses server actions to dynamically calculate data without hydrating massive data on the client.
+- **Helpful Note**: The ECharts canvas library is dynamically lazy-loaded to ensure the dashboard remains incredibly fast and responsive.
 
-## Planning
+### 2. Global Command Palette (`Ctrl+K`)
+- **Feature**: Cross-entity search to instantly navigate the ERP.
+- **Logic**: Pressing `Ctrl+K` opens a unified search dialog that queries products, shops, employees, and suppliers server-side, routing the user directly to the relevant entity.
 
-The active implementation roadmap and project knowledge base live in [brain/INDEX.md](brain/INDEX.md).
+### 3. Inventory Management (Products & Raw Materials)
+- **Feature**: Track factory inventory levels and raw materials.
+- **Logic**: Factory stock value is calculated strictly as `Quantity × Unit Price`. "Low Stock" alerts are dynamically generated whenever the factory quantity dips below the user-defined threshold.
 
-## Business Rules Included
+### 4. Supply Chain & Shop Transfers
+- **Feature**: Distribute stock from the central factory to individual ice cream shops.
+- **Logic**: Uses transactional queries to ensure that when stock is transferred, it is atomically deducted from the factory and added to the specific shop. 
+- **Helpful Note**: A print-ready invoice layout is automatically generated for every transfer, and physical receipts can be uploaded via the Document Storage API.
 
-- Employees with more than 6 completed working months receive an 8% bonus on total salary.
-- Employee current balance is total salary plus bonus minus total loans.
-- Factory stock value is quantity multiplied by unit price.
-- Low stock products are flagged when factory quantity is at or below the product threshold.
-- Manual backup keeps the latest 30 SQLite backup files.
+### 5. Unified Operations Calendar
+- **Feature**: A master calendar to view daily business operations.
+- **Logic**: Aggregates Sales, Transfers, Employee Loans, and Wastage into a single time-series calendar view. You can filter events by type for quick operational auditing.
+
+### 6. Employee & Finance Management
+- **Feature**: Track employee salaries, attendance, bonuses, and loans.
+- **Logic**: 
+  - **Bonus**: Employees with >6 months tenure automatically receive an 8% bonus on their total salary. 
+  - **Balance**: An employee's current balance is strictly computed as `(Total Salary + Bonus) - Total Loans`.
+  
+### 7. Automated Notifications
+- **Feature**: In-app bell alerts for critical events.
+- **Logic**: Instead of a cron job, notifications (like Low Stock or Expiring Materials) are calculated on-the-fly during page load by comparing the current date against material expiry dates and thresholds. Standard DB notifications are used for system alerts.
+
+### 8. System & Backup
+- **Feature**: Local database management and Dark/Light theming.
+- **Logic**: The application uses a local SQLite database (`dev.db`). The manual backup action creates a timestamped copy of the database and strictly enforces a retention policy of the latest 30 backups to prevent disk bloat.
 
 ## Next Build Steps
 

@@ -4,6 +4,7 @@ import { money, salarySummary } from "@/lib/finance";
 import { prisma } from "@/lib/prisma";
 import { EmployeeDialog } from "@/components/EmployeeForm";
 import { EmployeeLoanDialog } from "@/components/EmployeeLoanForm";
+import { ToggleStatusForm } from "@/components/ToggleStatusForm";
 import { Edit, Power } from "lucide-react";
 import { toggleEmployeeStatus } from "@/app/actions/employees";
 
@@ -32,6 +33,7 @@ export default async function EmployeesPage(): Promise<React.ReactElement> {
                 <th className="px-4 py-2 font-medium text-right">Bonus</th>
                 <th className="px-4 py-2 font-medium text-right">Loans</th>
                 <th className="px-4 py-2 font-medium text-right">Balance</th>
+                <th className="px-4 py-2 font-medium">Status</th>
                 <th className="px-4 py-2 font-medium text-right">Actions</th>
               </tr>
             </thead>
@@ -59,6 +61,11 @@ export default async function EmployeesPage(): Promise<React.ReactElement> {
                     <td className="px-4 py-3 text-right text-emerald-600 font-medium">{money(summary.bonus)}</td>
                     <td className="px-4 py-3 text-right text-rose-600 font-medium">{money(summary.totalLoan)}</td>
                     <td className="px-4 py-3 text-right font-bold text-ink">{money(summary.currentBalance)}</td>
+                    <td className="px-4 py-3">
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${employee.status === "ACTIVE" ? "bg-emerald-100 text-emerald-800" : "bg-gray-100 text-gray-800"}`}>
+                        {employee.status}
+                      </span>
+                    </td>
                     <td className="px-4 py-3 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <EmployeeLoanDialog employeeId={employee.id} />
@@ -70,11 +77,12 @@ export default async function EmployeesPage(): Promise<React.ReactElement> {
                             </button>
                           } 
                         />
-                        <form action={toggleEmployeeStatus.bind(null, employee.id) as any}>
-                          <button type="submit" className="icon-button" title={employee.status === "ACTIVE" ? "Mark Inactive (Log Exit)" : "Mark Active"}>
-                            <Power className={`w-4 h-4 ${employee.status === "ACTIVE" ? "text-rose-500" : "text-emerald-500"}`} />
-                          </button>
-                        </form>
+                        <ToggleStatusForm 
+                          action={toggleEmployeeStatus.bind(null, employee.id) as any} 
+                          isActive={employee.status === "ACTIVE"} 
+                          entityName={employee.name}
+                          warning={employee.status === "ACTIVE" ? `This will also create an Exit Log recording their current remaining loan of ${money(summary.totalLoan)}.` : ""}
+                        />
                       </div>
                     </td>
                   </tr>

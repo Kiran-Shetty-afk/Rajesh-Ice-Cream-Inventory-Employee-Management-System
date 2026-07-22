@@ -4,6 +4,7 @@ import { money } from "@/lib/finance";
 import { prisma } from "@/lib/prisma";
 import { ProductDialog } from "@/components/ProductForm";
 import { RawMaterialDialog } from "@/components/RawMaterialForm";
+import { ToggleStatusForm } from "@/components/ToggleStatusForm";
 import { Edit, Power } from "lucide-react";
 import { toggleProductStatus } from "@/app/actions/products";
 
@@ -76,11 +77,11 @@ export default async function InventoryPage(): Promise<React.ReactElement> {
                             </button>
                           } 
                         />
-                        <form action={toggleProductStatus.bind(null, product.id) as any}>
-                          <button type="submit" className="icon-button" title={product.status === "ACTIVE" ? "Mark Inactive" : "Mark Active"}>
-                            <Power className={`w-4 h-4 ${product.status === "ACTIVE" ? "text-rose-500" : "text-emerald-500"}`} />
-                          </button>
-                        </form>
+                        <ToggleStatusForm 
+                          action={toggleProductStatus.bind(null, product.id) as any} 
+                          isActive={product.status === "ACTIVE"} 
+                          entityName={product.name}
+                        />
                       </div>
                     </td>
                   </tr>

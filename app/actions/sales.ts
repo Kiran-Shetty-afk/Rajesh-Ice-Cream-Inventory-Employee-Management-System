@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { dailySaleSchema, dailySaleItemSchema } from "@/lib/schemas";
 import { z } from "zod";
 
-export async function createDailySale(data: z.infer<typeof dailySaleSchema>) {
+export async function createDailySale(data: z.infer<typeof dailySaleSchema>): Promise<{ success?: boolean; error?: any }> {
   const result = dailySaleSchema.safeParse(data);
   if (!result.success) return { error: "Validation failed" };
 
@@ -108,6 +108,7 @@ export async function createDailySale(data: z.infer<typeof dailySaleSchema>) {
     revalidatePath("/shops");
     return { success: true };
   } catch (err: any) {
-    return { error: err.message };
+    console.error("[Action Error]:", err);
+    return { error: "An unexpected error occurred. Please try again later." };
   }
 }

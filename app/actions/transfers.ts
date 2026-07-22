@@ -5,11 +5,11 @@ import { prisma } from "@/lib/prisma";
 import { stockTransferSchema } from "@/lib/schemas";
 import { z } from "zod";
 
-function generateTransferNo() {
+function generateTransferNo(): string {
   return `TR-${Date.now().toString().slice(-6)}-${Math.floor(Math.random() * 1000)}`;
 }
 
-export async function createTransfer(data: z.infer<typeof stockTransferSchema>) {
+export async function createTransfer(data: z.infer<typeof stockTransferSchema>): Promise<{ success?: boolean; error?: any }> {
   const result = stockTransferSchema.safeParse(data);
   if (!result.success) return { error: "Validation failed" };
 
@@ -92,6 +92,7 @@ export async function createTransfer(data: z.infer<typeof stockTransferSchema>) 
     revalidatePath("/shops");
     return { success: true };
   } catch (err: any) {
-    return { error: err.message };
+    console.error("[Action Error]:", err);
+    return { error: "An unexpected error occurred. Please try again later." };
   }
 }

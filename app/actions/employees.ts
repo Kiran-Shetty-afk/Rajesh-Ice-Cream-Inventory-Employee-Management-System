@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { employeeSchema, employeeLoanSchema } from "@/lib/schemas";
 import { z } from "zod";
 
-export async function createEmployee(data: z.infer<typeof employeeSchema>) {
+export async function createEmployee(data: z.infer<typeof employeeSchema>): Promise<{ success?: boolean; error?: any }> {
   const result = employeeSchema.safeParse(data);
   if (!result.success) return { error: result.error.format() };
 
@@ -23,11 +23,12 @@ export async function createEmployee(data: z.infer<typeof employeeSchema>) {
     revalidatePath("/employees");
     return { success: true };
   } catch (err: any) {
-    return { error: err.message };
+    console.error("[Action Error]:", err);
+    return { error: "An unexpected error occurred. Please try again later." };
   }
 }
 
-export async function updateEmployee(id: string, data: z.infer<typeof employeeSchema>) {
+export async function updateEmployee(id: string, data: z.infer<typeof employeeSchema>): Promise<{ success?: boolean; error?: any }> {
   const result = employeeSchema.safeParse(data);
   if (!result.success) return { error: result.error.format() };
 
@@ -46,11 +47,12 @@ export async function updateEmployee(id: string, data: z.infer<typeof employeeSc
     revalidatePath("/employees");
     return { success: true };
   } catch (err: any) {
-    return { error: err.message };
+    console.error("[Action Error]:", err);
+    return { error: "An unexpected error occurred. Please try again later." };
   }
 }
 
-export async function deactivateEmployee(id: string) {
+export async function deactivateEmployee(id: string): Promise<{ success?: boolean; error?: any }> {
   try {
     await prisma.employee.update({
       where: { id },
@@ -59,11 +61,12 @@ export async function deactivateEmployee(id: string) {
     revalidatePath("/employees");
     return { success: true };
   } catch (err: any) {
-    return { error: err.message };
+    console.error("[Action Error]:", err);
+    return { error: "An unexpected error occurred. Please try again later." };
   }
 }
 
-export async function deleteEmployee(id: string) {
+export async function deleteEmployee(id: string): Promise<{ success?: boolean; error?: any }> {
   try {
     await prisma.employee.delete({
       where: { id },
@@ -75,7 +78,7 @@ export async function deleteEmployee(id: string) {
   }
 }
 
-export async function createEmployeeLoan(data: z.infer<typeof employeeLoanSchema>) {
+export async function createEmployeeLoan(data: z.infer<typeof employeeLoanSchema>): Promise<{ success?: boolean; error?: any }> {
   const result = employeeLoanSchema.safeParse(data);
   if (!result.success) return { error: result.error.format() };
 
@@ -92,11 +95,12 @@ export async function createEmployeeLoan(data: z.infer<typeof employeeLoanSchema
     revalidatePath("/employees");
     return { success: true };
   } catch (err: any) {
-    return { error: err.message };
+    console.error("[Action Error]:", err);
+    return { error: "An unexpected error occurred. Please try again later." };
   }
 }
 
-export async function deleteEmployeeLoan(id: string) {
+export async function deleteEmployeeLoan(id: string): Promise<{ success?: boolean; error?: any }> {
   try {
     const loan = await prisma.employeeLoan.findUnique({ where: { id } });
     if (!loan) return { error: "Loan not found" };
@@ -106,6 +110,7 @@ export async function deleteEmployeeLoan(id: string) {
     revalidatePath("/employees");
     return { success: true };
   } catch (err: any) {
-    return { error: err.message };
+    console.error("[Action Error]:", err);
+    return { error: "An unexpected error occurred. Please try again later." };
   }
 }

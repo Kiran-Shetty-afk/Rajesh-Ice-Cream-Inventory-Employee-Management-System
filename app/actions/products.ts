@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { productSchema } from "@/lib/schemas";
 import { z } from "zod";
 
-export async function createProduct(data: z.infer<typeof productSchema>) {
+export async function createProduct(data: z.infer<typeof productSchema>): Promise<{ success?: boolean; error?: any }> {
   const result = productSchema.safeParse(data);
   if (!result.success) return { error: result.error.format() };
 
@@ -23,11 +23,12 @@ export async function createProduct(data: z.infer<typeof productSchema>) {
     revalidatePath("/inventory");
     return { success: true };
   } catch (err: any) {
-    return { error: err.message };
+    console.error("[Action Error]:", err);
+    return { error: "An unexpected error occurred. Please try again later." };
   }
 }
 
-export async function updateProduct(id: string, data: z.infer<typeof productSchema>) {
+export async function updateProduct(id: string, data: z.infer<typeof productSchema>): Promise<{ success?: boolean; error?: any }> {
   const result = productSchema.safeParse(data);
   if (!result.success) return { error: result.error.format() };
 
@@ -46,11 +47,12 @@ export async function updateProduct(id: string, data: z.infer<typeof productSche
     revalidatePath("/inventory");
     return { success: true };
   } catch (err: any) {
-    return { error: err.message };
+    console.error("[Action Error]:", err);
+    return { error: "An unexpected error occurred. Please try again later." };
   }
 }
 
-export async function deactivateProduct(id: string) {
+export async function deactivateProduct(id: string): Promise<{ success?: boolean; error?: any }> {
   try {
     await prisma.product.update({
       where: { id },
@@ -59,11 +61,12 @@ export async function deactivateProduct(id: string) {
     revalidatePath("/inventory");
     return { success: true };
   } catch (err: any) {
-    return { error: err.message };
+    console.error("[Action Error]:", err);
+    return { error: "An unexpected error occurred. Please try again later." };
   }
 }
 
-export async function deleteProduct(id: string) {
+export async function deleteProduct(id: string): Promise<{ success?: boolean; error?: any }> {
   try {
     // Only delete if there are no related transfers/stocks. 
     // Ideally this could throw an FK constraint error which we catch.

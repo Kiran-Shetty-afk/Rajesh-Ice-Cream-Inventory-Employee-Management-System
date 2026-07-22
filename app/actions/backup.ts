@@ -5,7 +5,7 @@ import path from "node:path";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
-export async function createManualBackup() {
+export async function createManualBackup(): Promise<{ success?: boolean; error?: any; message?: string }> {
   try {
     const dbUrl = process.env.DATABASE_URL;
     if (!dbUrl || !dbUrl.startsWith("file:")) {
@@ -55,6 +55,7 @@ export async function createManualBackup() {
     revalidatePath("/settings");
     return { success: true, message: `Backup created at ${target}` };
   } catch (err: any) {
-    return { error: err.message };
+    console.error("[Action Error]:", err);
+    return { error: "An unexpected error occurred. Please try again later." };
   }
 }

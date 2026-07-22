@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { rawMaterialSchema } from "@/lib/schemas";
 import { z } from "zod";
 
-export async function createRawMaterial(data: z.infer<typeof rawMaterialSchema>) {
+export async function createRawMaterial(data: z.infer<typeof rawMaterialSchema>): Promise<{ success?: boolean; error?: any }> {
   const result = rawMaterialSchema.safeParse(data);
   if (!result.success) return { error: result.error.format() };
 
@@ -23,11 +23,12 @@ export async function createRawMaterial(data: z.infer<typeof rawMaterialSchema>)
     revalidatePath("/inventory");
     return { success: true };
   } catch (err: any) {
-    return { error: err.message };
+    console.error("[Action Error]:", err);
+    return { error: "An unexpected error occurred. Please try again later." };
   }
 }
 
-export async function updateRawMaterial(id: string, data: z.infer<typeof rawMaterialSchema>) {
+export async function updateRawMaterial(id: string, data: z.infer<typeof rawMaterialSchema>): Promise<{ success?: boolean; error?: any }> {
   const result = rawMaterialSchema.safeParse(data);
   if (!result.success) return { error: result.error.format() };
 
@@ -46,11 +47,12 @@ export async function updateRawMaterial(id: string, data: z.infer<typeof rawMate
     revalidatePath("/inventory");
     return { success: true };
   } catch (err: any) {
-    return { error: err.message };
+    console.error("[Action Error]:", err);
+    return { error: "An unexpected error occurred. Please try again later." };
   }
 }
 
-export async function deleteRawMaterial(id: string) {
+export async function deleteRawMaterial(id: string): Promise<{ success?: boolean; error?: any }> {
   try {
     await prisma.rawMaterial.delete({
       where: { id },

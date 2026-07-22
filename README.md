@@ -17,7 +17,7 @@ Offline desktop app foundation for factory inventory, shop inventory, employee s
 ```bash
 cp .env.example .env
 npm install
-npm run prisma:generate
+npx prisma generate
 npm run db:prepare
 npm run dev
 ```
@@ -47,6 +47,10 @@ npm run build           # Build Next.js and Electron TypeScript
 - Report catalog for PDF, print, and Excel workflows
 - Analytics summary page
 - Backup and security settings page
+- Global Command Palette (`Ctrl+K`) for fast cross-entity search
+- Unified Operations Calendar for tracking sales, wastage, transfers, and loans
+- Print-optimized receipt layouts for purchase and transfer invoices
+- Robust Dark/Light mode theming system
 
 ## Planning
 

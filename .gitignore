@@ -1,0 +1,11 @@
+node_modules
+.next
+dist-electron
+release
+.env
+*.db
+*.db-journal
+backups
+
+# kenmark-init
+/temp/

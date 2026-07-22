@@ -1,0 +1,21 @@
+export const reportCatalog = [
+  "Factory Stock Report",
+  "Shop Stock Report",
+  "Stock Transfer Report",
+  "Inventory Valuation Report",
+  "Raw Material Report",
+  "Product Report",
+  "Category Report",
+  "Flavor Report",
+  "Daily Inventory Report",
+  "Weekly Inventory Report",
+  "Monthly Inventory Report",
+  "Yearly Inventory Report",
+  "Low Stock Report",
+  "Out of Stock Report",
+  "Transfer History Report",
+  "Employee Salary Report",
+  "Bonus Report",
+  "Loan Report",
+  "Financial Summary Report"
+];

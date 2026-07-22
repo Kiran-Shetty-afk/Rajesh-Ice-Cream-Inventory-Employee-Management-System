@@ -1,0 +1,9 @@
+▲ Next.js 16.2.10 (Turbopack)
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+- Environments: .env
+✓ Ready in 1351ms
+
+○ Compiling / ...
+✓ Finished writing to filesystem cache in 46s
+✓ Finished filesystem cache database compaction in 22.6s

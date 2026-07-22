@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(135deg, rgba(217, 154, 78, 0.10) 0 12px, transparent 12px 24px),
+    linear-gradient(180deg, #fffaf1 0%, #f8fbf5 48%, #fff7fb 100%);
+  color: #241b22;
+}
+
+::selection {
+  background: rgba(217, 70, 119, 0.18);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.table-head {
+  @apply bg-vanilla/60 text-left text-xs font-semibold uppercase tracking-normal text-cocoa/70;
+}
+
+.table-cell {
+  @apply border-b border-orange-100/80 px-4 py-3 text-sm;
+}
+
+.surface-card {
+  @apply rounded-md border border-orange-100/80 bg-white/90 shadow-soft backdrop-blur;
+}
+
+.primary-button {
+  @apply rounded-md bg-strawberry px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-rose-700 disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+.icon-button {
+  @apply rounded-md p-1.5 text-cocoa/50 transition-colors hover:bg-strawberry/10 hover:text-strawberry;
+}
+
+.surface-card thead {
+  @apply bg-vanilla/55 text-left text-sm text-cocoa/65;
+}
+
+.surface-card tbody {
+  @apply divide-y divide-orange-100/70;
+}
+
+.surface-card tbody tr {
+  @apply transition-colors hover:bg-vanilla/35;
+}
+
+.card-toolbar {
+  @apply flex items-center justify-between border-b border-orange-100/80 bg-vanilla/45 px-4 py-3;
+}

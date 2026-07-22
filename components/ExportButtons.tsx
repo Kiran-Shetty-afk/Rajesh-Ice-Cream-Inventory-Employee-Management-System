@@ -64,26 +64,26 @@ export function ExportButtons({ reportType, filters }: { reportType: string, fil
   };
 
   return (
-    <div className="mt-3 flex gap-2">
+    <div className="mt-3 flex flex-wrap gap-2">
       <button 
         onClick={handlePDF}
         disabled={loading}
-        className="inline-flex h-9 items-center gap-2 rounded-md border border-orange-100/80 px-3 text-sm hover:bg-vanilla/55 transition-colors disabled:opacity-50"
+        className="inline-flex h-9 items-center gap-1.5 rounded-md border border-orange-100/80 px-2.5 text-sm hover:bg-vanilla/55 transition-colors disabled:opacity-50"
       >
         <FileText size={16} />
-        {loading ? "Generating..." : "Download PDF"}
+        {loading ? "Wait..." : "PDF"}
       </button>
       <button 
         onClick={handleExcel}
         disabled={loading}
-        className="inline-flex h-9 items-center gap-2 rounded-md bg-emerald-600 px-3 text-sm text-white transition-colors hover:bg-emerald-700 disabled:opacity-50"
+        className="inline-flex h-9 items-center gap-1.5 rounded-md bg-emerald-600 px-2.5 text-sm text-white transition-colors hover:bg-emerald-700 disabled:opacity-50"
       >
         <FileDown size={16} />
-        {loading ? "Generating..." : "Download Excel"}
+        {loading ? "Wait..." : "Excel"}
       </button>
       <button 
         onClick={() => window.print()}
-        className="inline-flex h-9 items-center gap-2 rounded-md bg-white border border-gray-200 px-3 text-sm text-gray-700 transition-colors hover:bg-gray-50"
+        className="inline-flex h-9 items-center gap-1.5 rounded-md bg-white border border-gray-200 px-2.5 text-sm text-gray-700 transition-colors hover:bg-gray-50"
       >
         <Printer size={16} />
         Print

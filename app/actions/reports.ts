@@ -22,7 +22,7 @@ export async function getFactoryInventoryReport(filters?: ReportFilters) {
 
   const products = await prisma.product.findMany({ 
     where,
-    orderBy: { category: "asc", name: "asc" } 
+    orderBy: [{ category: "asc" }, { name: "asc" }] 
   });
   
   return products

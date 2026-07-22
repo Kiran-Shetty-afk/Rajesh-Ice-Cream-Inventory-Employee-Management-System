@@ -62,18 +62,25 @@ export function NotificationBell() {
             {notifications.length === 0 ? (
               <div className="px-4 py-6 text-center text-sm text-white/50">No notifications</div>
             ) : (
-              notifications.map((notif) => (
-                <div 
-                  key={notif.id} 
-                  className={clsx(
-                    "border-b border-white/5 px-4 py-3 text-sm transition-colors",
-                    notif.read ? "bg-transparent opacity-60" : "bg-white/5"
-                  )}
-                >
-                  <div className="flex justify-between items-start mb-1">
-                    <span className={clsx("font-semibold", notif.type === 'LOW_STOCK' ? 'text-amber-400' : notif.type === 'EXPIRY' ? 'text-strawberry' : 'text-vanilla')}>
-                      {notif.title}
-                    </span>
+              notifications.map((notif) => {
+                const colorMap: Record<string, string> = {
+                  LOW_STOCK: 'text-amber-400',
+                  EXPIRY: 'text-strawberry',
+                };
+                const titleColor = colorMap[notif.type] || 'text-vanilla';
+
+                return (
+                  <div 
+                    key={notif.id} 
+                    className={clsx(
+                      "border-b border-white/5 px-4 py-3 text-sm transition-colors",
+                      notif.read ? "bg-transparent opacity-60" : "bg-white/5"
+                    )}
+                  >
+                    <div className="flex justify-between items-start mb-1">
+                      <span className={clsx("font-semibold", titleColor)}>
+                        {notif.title}
+                      </span>
                     {!notif.read && (
                       <button 
                         onClick={(e) => handleMarkAsRead(notif.id, e)}
@@ -90,7 +97,8 @@ export function NotificationBell() {
                     {new Date(notif.createdAt).toLocaleString()}
                   </div>
                 </div>
-              ))
+                );
+              })
             )}
           </div>
         </div>

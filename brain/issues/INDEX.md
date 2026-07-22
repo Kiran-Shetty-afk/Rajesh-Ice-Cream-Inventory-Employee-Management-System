@@ -19,8 +19,8 @@
 
 | Category | Count |
 |----------|-------|
-| Active issues | 1 |
-| Completed | 6 |
+| Active issues | 0 |
+| Completed | 7 |
 | **Total** | **7** |
 
 ## Completed Issues
@@ -33,6 +33,7 @@
 | 004 | ECharts library is statically imported, inflating initial client bundle size | 2026-07-22 |
 | 005 | Missing return type annotations on notification server actions | 2026-07-22 |
 | 006 | Redundant try/catch error handling boilerplate in Server Actions | 2026-07-22 |
+| 007 | Nested ternary used for notification colors | 2026-07-22 |
 
 ## Active Issues by Priority
 
@@ -52,7 +53,7 @@
 
 | ID | Title |
 |----|-------|
-| 007 | Nested ternary used for notification colors |
+| _none_ | |
 
 ## Issue Structure
 

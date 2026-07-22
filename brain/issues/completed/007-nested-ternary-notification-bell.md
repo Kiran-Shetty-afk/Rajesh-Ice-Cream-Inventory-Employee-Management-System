@@ -4,8 +4,9 @@ title: Nested ternary used for notification colors
 severity: P2
 area: ui
 source: kenmark-issues-scan
-status: open
+status: completed
 created: 2026-07-22
+completed: 2026-07-22
 files:
   - components/NotificationBell.tsx
 related:

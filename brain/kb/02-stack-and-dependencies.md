@@ -29,3 +29,6 @@ Status: draft
 ## Maintenance notes
 
 - Update this file when adding dependencies, scripts, or build tools.
+
+- **vitest & React Testing Library**: Added for unit and component testing.
+

@@ -30,3 +30,7 @@ Status: verified
 ## Maintenance notes
 
 - Update this file when adding server actions, route handlers, IPC, export functions, or external integrations.
+
+## Error Handling
+Server actions are strictly typed and catch exceptions internally. They return generic errors ({ error: 'An unexpected error occurred. Please try again later.' }) to avoid leaking database schemas or system internals to the client.
+

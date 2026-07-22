@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v2026.07.22-1806-kb-sync
+- KB: updated 02-stack-and-dependencies.md, 05-api-and-integrations.md, and 11-known-risks-and-decisions.md for recent security and typing fixes.
+
 ## [2026-07-22] - Issue Sweeps and Quality Updates
 
 - **Testing**: Added Vitest and React Testing Library setup. Added baseline tests for utilities and components.
@@ -14,4 +17,5 @@
 
 ## v2026.07.12-1413-kb-sync
 - KB: updated 06-ui-and-routes, 05-api-and-integrations, 09-infra-and-deployment for full production UI CRUD implementation, backup scripts, and Electron integration.
+
 

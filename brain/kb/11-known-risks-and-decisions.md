@@ -30,3 +30,8 @@ Status: draft
 ## Maintenance notes
 
 - Add decision files under `brain/kb/decisions/` for major architecture choices.
+
+## [2026-07-22] Security & Type Safety Enhancements
+**Decision**: All server actions now return strict generic error messages rather than raw Error objects, and all exported page/action functions enforce strict TypeScript return types.
+**Rationale**: Prevents data leaks in Next.js Server Actions and improves DX by ensuring type-safe client usage.
+

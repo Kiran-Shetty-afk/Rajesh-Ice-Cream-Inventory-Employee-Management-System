@@ -7,17 +7,17 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { getFactoryInventoryReport, getShopInventoryReport, getEmployeeReport } from "@/app/actions/reports";
 
-export function ExportButtons({ reportType }: { reportType: string }) {
+export function ExportButtons({ reportType, filters }: { reportType: string, filters: any }) {
   const [loading, setLoading] = useState(false);
 
   const fetchReportData = async () => {
     switch (reportType) {
-      case "Factory Inventory":
-        return await getFactoryInventoryReport();
-      case "Shop Inventory":
-        return await getShopInventoryReport();
-      case "Employee Ledger":
-        return await getEmployeeReport();
+      case "Factory Stock Report":
+        return await getFactoryInventoryReport(filters);
+      case "Shop Stock Report":
+        return await getShopInventoryReport(filters);
+      case "Employee Salary Report":
+        return await getEmployeeReport(filters);
       default:
         alert("This report is not implemented yet.");
         return null;

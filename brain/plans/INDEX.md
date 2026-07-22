@@ -4,8 +4,8 @@
 
 | Field | Value |
 |------|-------|
-| Last Assigned ID | 004 |
-| Next ID | 005 |
+| Last Assigned ID | 006 |
+| Next ID | 007 |
 
 ## Ledger Rules
 
@@ -19,15 +19,16 @@
 
 | Category | Count |
 |----------|-------|
-| Active plans | 3 |
-| Completed | 1 |
-| **Total** | **4** |
+| Active plans | 1 |
+| Completed | 2 |
+| **Total** | **3** |
 
 ## Completed Plans
 
 | ID | Title | Tier | Completed |
 |----|-------|------|-----------|
 | 004 | Daily Shop Sales Entry Module | full-feature | 2026-07-22 |
+| 006 | Enterprise ERP Features Roadmap (Purchasing, Analytics, Alerts) | ultrathink | 2026-07-22 |
 
 ## Active Plans by Status
 
@@ -35,8 +36,7 @@
 
 | ID | Title | Tier |
 |----|-------|------|
-| 001 | Repo cleanup and quality pass after docs removal | quick |
-| 002 | Complete production-ready Thakur Ice Cream Manager | dig-deep |
+| 005 | Project Enhancement and Feature Roadmap Options | dig-deep |
 
 ### Approved
 
@@ -48,7 +48,7 @@
 
 | ID | Title | Tier |
 |----|-------|------|
-| 003 | Rename to Rajesh Icecream and Fix White Screen | quick |
+| _none_ | | |
 
 ## Plan Structure
 

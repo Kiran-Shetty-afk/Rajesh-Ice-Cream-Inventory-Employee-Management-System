@@ -7,7 +7,7 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export default async function SalesPage(): Promise<React.ReactElement> {
-  const [sales, shops, products] = await Promise.all([
+  const [sales, shops, products, employees] = await Promise.all([
     prisma.dailySale.findMany({
       include: {
         shop: true,
@@ -20,13 +20,15 @@ export default async function SalesPage(): Promise<React.ReactElement> {
       orderBy: { date: "desc" }
     }),
     prisma.shop.findMany({ orderBy: { name: "asc" } }),
-    prisma.product.findMany({ orderBy: { name: "asc" } })
+    prisma.product.findMany({ orderBy: { name: "asc" } }),
+    prisma.employee.findMany({ where: { status: "ACTIVE" } })
   ]);
 
   const data = {
     sales,
     shops,
     products,
+    employees,
   };
 
   return (

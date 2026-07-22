@@ -5,8 +5,8 @@ Status: draft
 
 ## Confirmed facts
 
-- The codebase has foundations for dashboard, inventory, shops, transfers, employees, reports, analytics, settings, and backups.
-- Most modules are read-only at initialization time.
+- The codebase has foundations for dashboard, inventory, shops, transfers, employees, reports, analytics, settings, backups, suppliers, purchases, and wastage.
+- Most modules are read-only at initialization time, but ERP tracking has been integrated for supply chain.
 
 ## Feature index
 
@@ -18,6 +18,7 @@ Status: draft
 | 004 | Employees and Finance | [features/004-employees-and-finance.md](features/004-employees-and-finance.md) | draft |
 | 005 | Reports and Analytics | [features/005-reports-and-analytics.md](features/005-reports-and-analytics.md) | draft |
 | 006 | Backup and Security | [features/006-backup-and-security.md](features/006-backup-and-security.md) | draft |
+| 007 | ERP Supply Chain | [features/007-erp-supply-chain.md](features/007-erp-supply-chain.md) | implemented |
 
 ## Important files inspected
 

@@ -3,7 +3,7 @@ import { salarySummary } from "@/lib/finance";
 
 export async function getDashboardData() {
   const [products, shops, employees, rawMaterials] = await Promise.all([
-    prisma.product.findMany({ include: { shopStocks: true } }),
+    prisma.product.findMany({ include: { shopStocks: { include: { shop: true } } } }),
     prisma.shop.findMany({ include: { stocks: true } }),
     prisma.employee.findMany({ include: { loans: true } }),
     prisma.rawMaterial.findMany()
@@ -30,11 +30,30 @@ export async function getDashboardData() {
   const totalLoans = employeeSummaries.reduce((sum, item) => sum + item.totalLoan, 0);
   const outstandingBalance = employeeSummaries.reduce((sum, item) => sum + item.currentBalance, 0);
 
+  const now = new Date();
+  const nextWeek = new Date();
+  nextWeek.setDate(now.getDate() + 7);
+
+  const expiringSoonItems = products.reduce((acc, product) => {
+    // Check factory stock
+    if (product.expiryDate && product.expiryDate <= nextWeek && product.factoryQuantity > 0) {
+      acc.push({ type: 'Factory', name: product.name, quantity: product.factoryQuantity, expiryDate: product.expiryDate, location: 'Factory' });
+    }
+    // Check shop stock
+    product.shopStocks.forEach(stock => {
+      if (stock.expiryDate && stock.expiryDate <= nextWeek && stock.quantity > 0) {
+        acc.push({ type: 'Shop', name: product.name, quantity: stock.quantity, expiryDate: stock.expiryDate, location: stock.shop.name });
+      }
+    });
+    return acc;
+  }, [] as Array<{type: string, name: string, quantity: number, expiryDate: Date, location: string}>);
+
   return {
     products,
     shops,
     employees,
     rawMaterials,
+    expiringSoonItems,
     totals: {
       totalProducts: products.length,
       totalFactoryStock,

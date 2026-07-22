@@ -1,19 +1,8 @@
 "use client";
 
 import type { ReactNode } from "react";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis
-} from "recharts";
+import dynamic from "next/dynamic";
+const ReactECharts = dynamic(() => import("echarts-for-react"), { ssr: false });
 import type { AnalyticsData } from "@/lib/analytics";
 
 const colors = ["#d94677", "#5472d3", "#f4b73f", "#2f9b7c", "#8b5cf6", "#d99a4e"];
@@ -52,48 +41,85 @@ export function DashboardSummaryCharts({ data }: { data: AnalyticsData }) {
   return (
     <section className="mt-6 grid gap-4 xl:grid-cols-2">
       <MiniChart title="Factory Inventory Distribution">
-        <ResponsiveContainer>
-          <PieChart>
-            <Tooltip />
-            <Legend />
-            <Pie data={categoryStock} dataKey="value" nameKey="name" outerRadius={82} label>
-              {categoryStock.map((entry, index) => <Cell key={entry.name} fill={colors[index % colors.length]} />)}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
+        <ReactECharts
+          option={{
+            tooltip: { trigger: 'item' },
+            legend: { top: 'bottom' },
+            color: colors,
+            series: [
+              {
+                name: 'Inventory',
+                type: 'pie',
+                radius: ['40%', '70%'],
+                itemStyle: { borderRadius: 5, borderColor: '#fff', borderWidth: 2 },
+                data: categoryStock.map(c => ({ name: c.name, value: c.value }))
+              }
+            ]
+          }}
+          style={{ height: '100%', width: '100%' }}
+        />
       </MiniChart>
       <MiniChart title="Shop Inventory Comparison">
-        <ResponsiveContainer>
-          <BarChart data={shopStock}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="value" name="Units" fill="#5472d3" radius={[6, 6, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+        <ReactECharts
+          option={{
+            tooltip: { trigger: 'axis' },
+            grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+            xAxis: { type: 'category', data: shopStock.map(s => s.name) },
+            yAxis: { type: 'value' },
+            color: ['#5472d3'],
+            series: [
+              {
+                name: 'Units',
+                type: 'bar',
+                barWidth: '60%',
+                data: shopStock.map(s => s.value),
+                itemStyle: { borderRadius: [6, 6, 0, 0] }
+              }
+            ]
+          }}
+          style={{ height: '100%', width: '100%' }}
+        />
       </MiniChart>
-      <MiniChart title="Top 10 Products">
-        <ResponsiveContainer>
-          <BarChart data={topProducts} layout="vertical" margin={{ left: 24 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis type="number" />
-            <YAxis dataKey="name" type="category" width={120} />
-            <Tooltip />
-            <Bar dataKey="value" name="Factory units" fill="#d94677" radius={[0, 6, 6, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+      <MiniChart title="Top 10 Products (Factory Stock)">
+        <ReactECharts
+          option={{
+            tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+            grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+            xAxis: { type: 'value' },
+            yAxis: { type: 'category', data: topProducts.map(p => p.name).reverse() },
+            color: ['#d94677'],
+            series: [
+              {
+                name: 'Factory units',
+                type: 'bar',
+                data: topProducts.map(p => p.value).reverse(),
+                itemStyle: { borderRadius: [0, 6, 6, 0] }
+              }
+            ]
+          }}
+          style={{ height: '100%', width: '100%' }}
+        />
       </MiniChart>
       <MiniChart title="Flavor Distribution">
-        <ResponsiveContainer>
-          <PieChart>
-            <Tooltip />
-            <Legend />
-            <Pie data={flavorStock} dataKey="value" nameKey="name" innerRadius={48} outerRadius={82}>
-              {flavorStock.map((entry, index) => <Cell key={entry.name} fill={colors[index % colors.length]} />)}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
+        <ReactECharts
+          option={{
+            tooltip: { trigger: 'item' },
+            legend: { top: 'bottom' },
+            color: colors,
+            series: [
+              {
+                name: 'Flavor',
+                type: 'pie',
+                radius: '70%',
+                data: flavorStock.map(f => ({ name: f.name, value: f.value })),
+                emphasis: {
+                  itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' }
+                }
+              }
+            ]
+          }}
+          style={{ height: '100%', width: '100%' }}
+        />
       </MiniChart>
     </section>
   );

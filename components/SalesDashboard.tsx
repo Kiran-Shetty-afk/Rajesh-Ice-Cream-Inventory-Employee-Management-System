@@ -12,24 +12,8 @@ import {
   Search,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import {
-  Area,
-  AreaChart,
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  ComposedChart,
-  Legend,
-  Line,
-  LineChart,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis
-} from "recharts";
+import dynamic from "next/dynamic";
+const ReactECharts = dynamic(() => import("echarts-for-react"), { ssr: false });
 import { money } from "@/lib/finance";
 
 // Types
@@ -37,6 +21,7 @@ type SalesData = {
   sales: any[]; // Prisma DailySale with items
   shops: any[];
   products: any[];
+  employees: any[];
 };
 
 type TrendMode = "daily" | "weekly" | "monthly" | "yearly";
@@ -179,6 +164,8 @@ export function SalesDashboard({ data }: { data: SalesData }) {
   const totalRevenue = filteredSales.reduce((sum, item) => sum + item.totalPrice, 0);
   const totalQuantity = filteredSales.reduce((sum, item) => sum + item.quantity, 0);
   const totalWastage = filteredSales.reduce((sum, item) => sum + item.wastage, 0);
+  const totalSalary = data.employees.reduce((sum, emp) => sum + (emp.monthlySalary || 0), 0);
+  const estimatedProfit = totalRevenue - totalSalary;
   
   const shopRevenue = groupSum(filteredSales, item => item.shopName, item => item.totalPrice);
   const bestShop = shopRevenue[0]?.name || "N/A";
@@ -253,9 +240,9 @@ export function SalesDashboard({ data }: { data: SalesData }) {
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <KpiCard label="Total Revenue" value={money(totalRevenue)} detail="For selected period" icon={IndianRupee} tone="success" />
-        <KpiCard label="Total Quantity Sold" value={String(totalQuantity)} detail="Units sold" icon={PackageCheck} />
+        <KpiCard label="Total Salary Exp." value={money(totalSalary)} detail={`${data.employees.length} active employees (monthly)`} icon={IndianRupee} tone="warn" />
+        <KpiCard label="Estimated Profit" value={money(estimatedProfit)} detail="Revenue - Monthly Salary" icon={TrendingUp} tone={estimatedProfit >= 0 ? "success" : "warn"} />
         <KpiCard label="Top Performing Shop" value={bestShop} detail={shopRevenue[0] ? money(shopRevenue[0].value) : "No data"} icon={Store} />
-        <KpiCard label="Best Selling Product" value={bestProduct} detail={productRevenue[0] ? money(productRevenue[0].value) : "No data"} icon={TrendingUp} />
       </section>
 
       <section className="surface-card p-4">
@@ -271,15 +258,25 @@ export function SalesDashboard({ data }: { data: SalesData }) {
         </div>
         <div className="h-80">
           {revenueTrend.length === 0 ? <EmptyChart /> : (
-            <ResponsiveContainer>
-              <AreaChart data={revenueTrend}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip formatter={(value) => money(Number(value))} />
-                <Area dataKey="value" name="Revenue" fill="#b7e4d6" stroke="#2f9b7c" />
-              </AreaChart>
-            </ResponsiveContainer>
+            <ReactECharts
+              option={{
+                tooltip: { trigger: 'axis', formatter: (params: any) => `${params[0].name}<br/>${params[0].marker} ${money(params[0].value)}` },
+                grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                xAxis: { type: 'category', boundaryGap: false, data: revenueTrend.map(r => r.name) },
+                yAxis: { type: 'value' },
+                series: [
+                  {
+                    name: 'Revenue',
+                    type: 'line',
+                    areaStyle: { color: '#b7e4d6' },
+                    itemStyle: { color: '#2f9b7c' },
+                    smooth: true,
+                    data: revenueTrend.map(r => r.value)
+                  }
+                ]
+              }}
+              style={{ height: '100%', width: '100%' }}
+            />
           )}
         </div>
       </section>
@@ -287,29 +284,47 @@ export function SalesDashboard({ data }: { data: SalesData }) {
       <section className="grid gap-4 xl:grid-cols-2">
         <ChartCard title="Revenue by Shop">
           {shopRevenue.length === 0 ? <EmptyChart /> : (
-            <ResponsiveContainer>
-              <BarChart data={shopRevenue} layout="vertical" margin={{ left: 30 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" />
-                <YAxis dataKey="name" type="category" width={100} />
-                <Tooltip formatter={(value) => money(Number(value))} />
-                <Bar dataKey="value" name="Revenue" fill="#5472d3" radius={[0, 6, 6, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            <ReactECharts
+              option={{
+                tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, formatter: (params: any) => `${params[0].name}<br/>${params[0].marker} ${money(params[0].value)}` },
+                grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                xAxis: { type: 'value' },
+                yAxis: { type: 'category', data: shopRevenue.map(s => s.name).reverse() },
+                color: ['#5472d3'],
+                series: [
+                  {
+                    name: 'Revenue',
+                    type: 'bar',
+                    data: shopRevenue.map(s => s.value).reverse(),
+                    itemStyle: { borderRadius: [0, 6, 6, 0] }
+                  }
+                ]
+              }}
+              style={{ height: '100%', width: '100%' }}
+            />
           )}
         </ChartCard>
         
         <ChartCard title="Revenue by Category">
           {categoryRevenue.length === 0 ? <EmptyChart /> : (
-             <ResponsiveContainer>
-             <PieChart>
-               <Tooltip formatter={(value) => money(Number(value))} />
-               <Legend />
-               <Pie data={categoryRevenue} dataKey="value" nameKey="name" outerRadius={95} label>
-                 {categoryRevenue.map((item, index) => <Cell key={item.name} fill={chartColors[index % chartColors.length]} />)}
-               </Pie>
-             </PieChart>
-           </ResponsiveContainer>
+             <ReactECharts
+              option={{
+                tooltip: { trigger: 'item', formatter: (params: any) => `${params.name}: ${money(params.value)}` },
+                legend: { top: 'bottom' },
+                color: chartColors,
+                series: [
+                  {
+                    name: 'Revenue',
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    itemStyle: { borderRadius: 5, borderColor: '#fff', borderWidth: 2 },
+                    label: { show: true },
+                    data: categoryRevenue.map(c => ({ name: c.name, value: c.value }))
+                  }
+                ]
+              }}
+              style={{ height: '100%', width: '100%' }}
+            />
           )}
         </ChartCard>
       </section>

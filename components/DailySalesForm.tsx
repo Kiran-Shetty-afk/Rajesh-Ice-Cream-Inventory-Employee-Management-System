@@ -145,24 +145,26 @@ export function DailySalesForm({ shops, products }: DailySalesFormProps) {
         <label className="block text-sm font-medium text-cocoa/80">Sales Items</label>
         
         {/* Desktop Header for items */}
-        <div className="hidden sm:grid sm:grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_auto] gap-2 px-1 mb-1 text-xs font-semibold text-cocoa/60 uppercase tracking-wider">
-          <div>Product</div>
-          <div>Unit Price</div>
-          <div>Sold Qty</div>
+        <div className="hidden sm:grid sm:grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_1fr_auto] gap-2 px-1 mb-1 text-xs font-semibold text-cocoa/60 uppercase tracking-wider">
+          <div>Product (Open)</div>
+          <div>Price</div>
+          <div>Sold</div>
           <div>Wastage</div>
           <div>Returns</div>
+          <div>Closing</div>
           <div>Total</div>
           <div className="w-8"></div>
         </div>
 
         {items.map((item, index) => {
           const maxStock = selectedShop?.stocks.find(s => s.productId === item.productId)?.quantity || 0;
+          const closingStock = maxStock - item.quantity - item.wastage + item.returned;
           
           return (
-            <div key={index} className="grid grid-cols-1 sm:grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_auto] gap-2 items-center bg-vanilla/10 p-3 sm:p-0 sm:bg-transparent rounded-lg border sm:border-0 border-vanilla/40">
+            <div key={index} className="grid grid-cols-1 sm:grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_1fr_auto] gap-2 items-center bg-vanilla/10 p-3 sm:p-0 sm:bg-transparent rounded-lg border sm:border-0 border-vanilla/40">
               
               <div className="flex flex-col sm:block gap-1">
-                <span className="sm:hidden text-xs text-cocoa/60 font-semibold uppercase">Product</span>
+                <span className="sm:hidden text-xs text-cocoa/60 font-semibold uppercase">Product (Open)</span>
                 <select
                   value={item.productId}
                   onChange={(e) => handleProductChange(index, e.target.value)}
@@ -172,13 +174,13 @@ export function DailySalesForm({ shops, products }: DailySalesFormProps) {
                   <option value="" disabled>Select product</option>
                   {availableProducts.map(p => {
                     const s = selectedShop?.stocks.find(st => st.productId === p.id)?.quantity || 0;
-                    return <option key={p.id} value={p.id}>{p.name} (Stock: {s})</option>;
+                    return <option key={p.id} value={p.id}>{p.name} (Op: {s})</option>;
                   })}
                 </select>
               </div>
 
               <div className="flex flex-col sm:block gap-1">
-                 <span className="sm:hidden text-xs text-cocoa/60 font-semibold uppercase">Unit Price</span>
+                 <span className="sm:hidden text-xs text-cocoa/60 font-semibold uppercase">Price</span>
                  <input
                   type="number"
                   value={item.unitPrice}
@@ -240,6 +242,13 @@ export function DailySalesForm({ shops, products }: DailySalesFormProps) {
                   min="0"
                   className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-strawberry"
                 />
+              </div>
+
+              <div className="flex flex-col sm:block gap-1">
+                 <span className="sm:hidden text-xs text-cocoa/60 font-semibold uppercase">Closing</span>
+                 <div className="w-full px-3 py-2 text-sm font-semibold bg-gray-50 border border-transparent text-gray-700">
+                   {closingStock}
+                 </div>
               </div>
 
               <div className="flex items-center sm:block pt-4 sm:pt-0 gap-2">

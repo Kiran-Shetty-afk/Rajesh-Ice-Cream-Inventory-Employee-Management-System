@@ -2,8 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  color-scheme: light;
+@layer base {
+  :root {
+    --color-ink: 36 27 34; /* #241b22 */
+    --color-cream: 255 248 232; /* #fff8e8 */
+    --color-vanilla: 255 243 207; /* #fff3cf */
+    --color-pistachio: 183 228 214; /* #b7e4d6 */
+    --color-strawberry: 217 70 119; /* #d94677 */
+    --color-blueberry: 84 114 211; /* #5472d3 */
+    --color-cocoa: 91 63 51; /* #5b3f33 */
+    --color-cone: 217 154 78; /* #d99a4e */
+    --color-saffron: 244 183 63; /* #f4b73f */
+    --color-body-bg1: 255 250 241; /* #fffaf1 */
+    --color-body-bg2: 248 251 245; /* #f8fbf5 */
+    --color-body-bg3: 255 247 251; /* #fff7fb */
+    --shadow-soft: 0 14px 38px rgba(91, 63, 51, 0.10);
+  }
+
+  .dark {
+    --color-ink: 240 230 235;
+    --color-cream: 30 25 35;
+    --color-vanilla: 45 40 50;
+    --color-pistachio: 45 80 70;
+    --color-strawberry: 250 90 140;
+    --color-blueberry: 120 150 240;
+    --color-cocoa: 200 180 170;
+    --color-cone: 230 180 100;
+    --color-saffron: 250 200 80;
+    --color-body-bg1: 20 15 22;
+    --color-body-bg2: 18 18 25;
+    --color-body-bg3: 22 16 24;
+    --shadow-soft: 0 14px 38px rgba(0, 0, 0, 0.40);
+  }
 }
 
 * {
@@ -13,13 +43,14 @@
 body {
   margin: 0;
   background:
-    linear-gradient(135deg, rgba(217, 154, 78, 0.10) 0 12px, transparent 12px 24px),
-    linear-gradient(180deg, #fffaf1 0%, #f8fbf5 48%, #fff7fb 100%);
-  color: #241b22;
+    linear-gradient(135deg, rgb(var(--color-cone) / 0.10) 0 12px, transparent 12px 24px),
+    linear-gradient(180deg, rgb(var(--color-body-bg1)) 0%, rgb(var(--color-body-bg2)) 48%, rgb(var(--color-body-bg3)) 100%);
+  color: rgb(var(--color-ink));
+  background-attachment: fixed;
 }
 
 ::selection {
-  background: rgba(217, 70, 119, 0.18);
+  background: rgba(var(--color-strawberry) / 0.18);
 }
 
 button,
@@ -34,11 +65,11 @@ textarea {
 }
 
 .table-cell {
-  @apply border-b border-orange-100/80 px-4 py-3 text-sm;
+  @apply border-b border-orange-100/30 px-4 py-3 text-sm;
 }
 
 .surface-card {
-  @apply rounded-md border border-orange-100/80 bg-white/90 shadow-soft backdrop-blur;
+  @apply rounded-md border border-orange-100/30 bg-white/90 dark:bg-black/40 shadow-soft backdrop-blur;
 }
 
 .primary-button {
@@ -54,7 +85,7 @@ textarea {
 }
 
 .surface-card tbody {
-  @apply divide-y divide-orange-100/70;
+  @apply divide-y divide-orange-100/30;
 }
 
 .surface-card tbody tr {
@@ -62,5 +93,5 @@ textarea {
 }
 
 .card-toolbar {
-  @apply flex items-center justify-between border-b border-orange-100/80 bg-vanilla/45 px-4 py-3;
+  @apply flex items-center justify-between border-b border-orange-100/30 bg-vanilla/45 px-4 py-3;
 }

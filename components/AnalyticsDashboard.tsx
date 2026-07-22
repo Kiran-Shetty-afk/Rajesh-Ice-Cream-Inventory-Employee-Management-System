@@ -14,30 +14,8 @@ import {
   TrendingUp
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import {
-  Area,
-  AreaChart,
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  ComposedChart,
-  Legend,
-  Line,
-  LineChart,
-  Pie,
-  PieChart,
-  Radar,
-  RadarChart,
-  PolarAngleAxis,
-  PolarGrid,
-  PolarRadiusAxis,
-  ResponsiveContainer,
-  Tooltip,
-  Treemap,
-  XAxis,
-  YAxis
-} from "recharts";
+import dynamic from "next/dynamic";
+const ReactECharts = dynamic(() => import("echarts-for-react"), { ssr: false });
 import type { AnalyticsData, AnalyticsProduct, AnalyticsTransfer } from "@/lib/analytics";
 import { money } from "@/lib/finance";
 
@@ -366,28 +344,46 @@ export function AnalyticsDashboard({ data }: { data: AnalyticsData }) {
       <section className="grid gap-4 xl:grid-cols-2">
         <ChartCard title="Category-wise Inventory Distribution">
           {categoryDistribution.length === 0 ? <EmptyChart /> : (
-            <ResponsiveContainer>
-              <PieChart>
-                <Tooltip />
-                <Legend />
-                <Pie data={categoryDistribution} dataKey="value" nameKey="name" outerRadius={95} label>
-                  {categoryDistribution.map((item, index) => <Cell key={item.name} fill={chartColors[index % chartColors.length]} />)}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
+            <ReactECharts
+              option={{
+                tooltip: { trigger: 'item' },
+                legend: { top: 'bottom' },
+                color: chartColors,
+                series: [
+                  {
+                    name: 'Quantity',
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    itemStyle: { borderRadius: 5, borderColor: '#fff', borderWidth: 2 },
+                    label: { show: true },
+                    data: categoryDistribution.map(item => ({ name: item.name, value: item.value }))
+                  }
+                ]
+              }}
+              style={{ height: '100%', width: '100%' }}
+            />
           )}
         </ChartCard>
         <ChartCard title="Flavor-wise Distribution">
           {flavorDistribution.length === 0 ? <EmptyChart /> : (
-            <ResponsiveContainer>
-              <PieChart>
-                <Tooltip />
-                <Legend />
-                <Pie data={flavorDistribution} dataKey="value" nameKey="name" innerRadius={55} outerRadius={95} label>
-                  {flavorDistribution.map((item, index) => <Cell key={item.name} fill={chartColors[index % chartColors.length]} />)}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
+            <ReactECharts
+              option={{
+                tooltip: { trigger: 'item' },
+                legend: { top: 'bottom' },
+                color: chartColors,
+                series: [
+                  {
+                    name: 'Quantity',
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    itemStyle: { borderRadius: 5, borderColor: '#fff', borderWidth: 2 },
+                    label: { show: true },
+                    data: flavorDistribution.map(item => ({ name: item.name, value: item.value }))
+                  }
+                ]
+              }}
+              style={{ height: '100%', width: '100%' }}
+            />
           )}
         </ChartCard>
       </section>
@@ -395,31 +391,58 @@ export function AnalyticsDashboard({ data }: { data: AnalyticsData }) {
       <section className="grid gap-4 xl:grid-cols-2">
         <ChartCard title="Stock Levels by Product">
           {productQuantity.length === 0 ? <EmptyChart /> : (
-            <ResponsiveContainer>
-              <BarChart data={productQuantity.slice(0, 12)} layout="vertical" margin={{ left: 28 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" />
-                <YAxis dataKey="name" type="category" width={115} />
-                <Tooltip />
-                <Bar dataKey="quantity" fill="#5472d3" radius={[0, 6, 6, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            <ReactECharts
+              option={{
+                tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+                grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                xAxis: { type: 'value' },
+                yAxis: { type: 'category', data: productQuantity.slice(0, 12).map(p => p.name).reverse() },
+                color: ['#5472d3'],
+                series: [
+                  {
+                    name: 'Quantity',
+                    type: 'bar',
+                    data: productQuantity.slice(0, 12).map(p => p.quantity).reverse(),
+                    itemStyle: { borderRadius: [0, 6, 6, 0] }
+                  }
+                ]
+              }}
+              style={{ height: '100%', width: '100%' }}
+            />
           )}
         </ChartCard>
         <ChartCard title="Category Performance: Quantity and Value">
           {categoryDistribution.length === 0 ? <EmptyChart /> : (
-            <ResponsiveContainer>
-              <ComposedChart data={categoryDistribution.map((item) => ({ name: item.name, quantity: item.value, stockValue: categoryValue.find((entry) => entry.name === item.name)?.value ?? 0 }))}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis yAxisId="left" />
-                <YAxis yAxisId="right" orientation="right" />
-                <Tooltip formatter={(value, name) => (name === "stockValue" ? money(Number(value)) : value)} />
-                <Legend />
-                <Bar yAxisId="left" dataKey="stockValue" name="Stock value" fill="#d94677" radius={[6, 6, 0, 0]} />
-                <Line yAxisId="right" dataKey="quantity" name="Quantity" stroke="#2f9b7c" strokeWidth={2} />
-              </ComposedChart>
-            </ResponsiveContainer>
+            <ReactECharts
+              option={{
+                tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
+                legend: { data: ['Stock value', 'Quantity'] },
+                grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                xAxis: { type: 'category', data: categoryDistribution.map(item => item.name) },
+                yAxis: [
+                  { type: 'value', name: 'Value', position: 'left' },
+                  { type: 'value', name: 'Quantity', position: 'right' }
+                ],
+                series: [
+                  {
+                    name: 'Stock value',
+                    type: 'bar',
+                    yAxisIndex: 0,
+                    itemStyle: { color: '#d94677', borderRadius: [6, 6, 0, 0] },
+                    data: categoryDistribution.map(item => categoryValue.find(entry => entry.name === item.name)?.value ?? 0)
+                  },
+                  {
+                    name: 'Quantity',
+                    type: 'line',
+                    yAxisIndex: 1,
+                    itemStyle: { color: '#2f9b7c' },
+                    lineStyle: { width: 2 },
+                    data: categoryDistribution.map(item => item.value)
+                  }
+                ]
+              }}
+              style={{ height: '100%', width: '100%' }}
+            />
           )}
         </ChartCard>
       </section>
@@ -438,28 +461,46 @@ export function AnalyticsDashboard({ data }: { data: AnalyticsData }) {
         <div className="grid gap-4 xl:grid-cols-2">
           <div className="h-72">
             {transferTrend.length === 0 ? <EmptyChart /> : (
-              <ResponsiveContainer>
-                <LineChart data={transferTrend}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="value" name="Stock received" stroke="#5472d3" strokeWidth={3} />
-                </LineChart>
-              </ResponsiveContainer>
+              <ReactECharts
+                option={{
+                  tooltip: { trigger: 'axis' },
+                  grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                  xAxis: { type: 'category', data: transferTrend.map(t => t.name) },
+                  yAxis: { type: 'value' },
+                  series: [
+                    {
+                      name: 'Stock received',
+                      type: 'line',
+                      smooth: true,
+                      itemStyle: { color: '#5472d3' },
+                      lineStyle: { width: 3 },
+                      data: transferTrend.map(t => t.value)
+                    }
+                  ]
+                }}
+                style={{ height: '100%', width: '100%' }}
+              />
             )}
           </div>
           <div className="h-72">
             {transferByShop.length === 0 ? <EmptyChart /> : (
-              <ResponsiveContainer>
-                <BarChart data={transferByShop}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="value" name="Units received" fill="#f4b73f" radius={[6, 6, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+              <ReactECharts
+                option={{
+                  tooltip: { trigger: 'axis' },
+                  grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                  xAxis: { type: 'category', data: transferByShop.map(t => t.name) },
+                  yAxis: { type: 'value' },
+                  series: [
+                    {
+                      name: 'Units received',
+                      type: 'bar',
+                      itemStyle: { color: '#f4b73f', borderRadius: [6, 6, 0, 0] },
+                      data: transferByShop.map(t => t.value)
+                    }
+                  ]
+                }}
+                style={{ height: '100%', width: '100%' }}
+              />
             )}
           </div>
         </div>
@@ -468,34 +509,78 @@ export function AnalyticsDashboard({ data }: { data: AnalyticsData }) {
       <section className="grid gap-4 xl:grid-cols-3">
         <ChartCard title="Inventory Value Treemap">
           {categoryValue.length === 0 ? <EmptyChart /> : (
-            <ResponsiveContainer>
-              <Treemap data={categoryValue} dataKey="value" nameKey="name" stroke="#fff" fill="#d94677" />
-            </ResponsiveContainer>
+            <ReactECharts
+              option={{
+                tooltip: { formatter: (info: any) => `${info.name}: ${money(info.value)}` },
+                series: [
+                  {
+                    type: 'treemap',
+                    itemStyle: { borderColor: '#fff' },
+                    levels: [
+                      {
+                        itemStyle: { borderWidth: 0, gapWidth: 1 }
+                      },
+                      {
+                        color: chartColors,
+                        colorMappingBy: 'id',
+                        itemStyle: { gapWidth: 1 }
+                      }
+                    ],
+                    data: categoryValue.map(c => ({ name: c.name, value: c.value }))
+                  }
+                ]
+              }}
+              style={{ height: '100%', width: '100%' }}
+            />
           )}
         </ChartCard>
         <ChartCard title="Inventory Value Trend">
           {valueTrend.length === 0 ? <EmptyChart /> : (
-            <ResponsiveContainer>
-              <AreaChart data={valueTrend}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip formatter={(value) => money(Number(value))} />
-                <Area dataKey="value" name="Transfer value" fill="#b7e4d6" stroke="#2f9b7c" />
-              </AreaChart>
-            </ResponsiveContainer>
+            <ReactECharts
+              option={{
+                tooltip: { trigger: 'axis', formatter: (params: any) => `${params[0].name}<br/>${params[0].marker} ${money(params[0].value)}` },
+                grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                xAxis: { type: 'category', boundaryGap: false, data: valueTrend.map(v => v.name) },
+                yAxis: { type: 'value' },
+                series: [
+                  {
+                    name: 'Transfer value',
+                    type: 'line',
+                    areaStyle: { color: '#b7e4d6' },
+                    itemStyle: { color: '#2f9b7c' },
+                    data: valueTrend.map(v => v.value)
+                  }
+                ]
+              }}
+              style={{ height: '100%', width: '100%' }}
+            />
           )}
         </ChartCard>
         <ChartCard title="Category Comparison">
           {categoryDistribution.length === 0 ? <EmptyChart /> : (
-            <ResponsiveContainer>
-              <RadarChart data={categoryDistribution.slice(0, 8)}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="name" />
-                <PolarRadiusAxis />
-                <Radar dataKey="value" fill="#5472d3" fillOpacity={0.45} stroke="#5472d3" />
-              </RadarChart>
-            </ResponsiveContainer>
+            <ReactECharts
+              option={{
+                tooltip: { trigger: 'item' },
+                radar: {
+                  indicator: categoryDistribution.slice(0, 8).map(c => ({ name: c.name }))
+                },
+                series: [
+                  {
+                    type: 'radar',
+                    areaStyle: { color: 'rgba(84, 114, 211, 0.45)' },
+                    lineStyle: { color: '#5472d3' },
+                    itemStyle: { color: '#5472d3' },
+                    data: [
+                      {
+                        value: categoryDistribution.slice(0, 8).map(c => c.value),
+                        name: 'Category'
+                      }
+                    ]
+                  }
+                ]
+              }}
+              style={{ height: '100%', width: '100%' }}
+            />
           )}
         </ChartCard>
       </section>
@@ -518,14 +603,21 @@ export function AnalyticsDashboard({ data }: { data: AnalyticsData }) {
           <div className="grid gap-4 p-4 md:grid-cols-2">
             <div className="h-60">
               {rawMaterialDistribution.length === 0 ? <EmptyChart /> : (
-                <ResponsiveContainer>
-                  <PieChart>
-                    <Tooltip />
-                    <Pie data={rawMaterialDistribution} dataKey="value" nameKey="name" outerRadius={82}>
-                      {rawMaterialDistribution.map((item, index) => <Cell key={item.name} fill={chartColors[index % chartColors.length]} />)}
-                    </Pie>
-                  </PieChart>
-                </ResponsiveContainer>
+                <ReactECharts
+                  option={{
+                    tooltip: { trigger: 'item' },
+                    color: chartColors,
+                    series: [
+                      {
+                        name: 'Quantity',
+                        type: 'pie',
+                        radius: '70%',
+                        data: rawMaterialDistribution.map(item => ({ name: item.name, value: item.value }))
+                      }
+                    ]
+                  }}
+                  style={{ height: '100%', width: '100%' }}
+                />
               )}
             </div>
             <div className="space-y-3">

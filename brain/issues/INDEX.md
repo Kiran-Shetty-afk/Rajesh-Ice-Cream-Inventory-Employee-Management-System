@@ -4,8 +4,8 @@
 
 | Field | Value |
 |------|-------|
-| Last Assigned ID | 003 |
-| Next ID | 004 |
+| Last Assigned ID | 006 |
+| Next ID | 007 |
 
 ## Ledger Rules
 
@@ -20,8 +20,8 @@
 | Category | Count |
 |----------|-------|
 | Active issues | 0 |
-| Completed | 3 |
-| **Total** | **3** |
+| Completed | 6 |
+| **Total** | **6** |
 
 ## Completed Issues
 
@@ -30,6 +30,9 @@
 | 001 | Raw error details returned to client in server actions | 2026-07-22 |
 | 002 | Missing test coverage for all core areas | 2026-07-22 |
 | 003 | Missing return type annotations on exported functions | 2026-07-22 |
+| 004 | ECharts library is statically imported, inflating initial client bundle size | 2026-07-22 |
+| 005 | Missing return type annotations on notification server actions | 2026-07-22 |
+| 006 | Redundant try/catch error handling boilerplate in Server Actions | 2026-07-22 |
 
 ## Active Issues by Priority
 

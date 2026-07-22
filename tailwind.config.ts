@@ -2,21 +2,22 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./lib/**/*.{ts,tsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        ink: "#241b22",
-        cream: "#fff8e8",
-        vanilla: "#fff3cf",
-        pistachio: "#b7e4d6",
-        strawberry: "#d94677",
-        blueberry: "#5472d3",
-        cocoa: "#5b3f33",
-        cone: "#d99a4e",
-        saffron: "#f4b73f"
+        ink: "rgb(var(--color-ink) / <alpha-value>)",
+        cream: "rgb(var(--color-cream) / <alpha-value>)",
+        vanilla: "rgb(var(--color-vanilla) / <alpha-value>)",
+        pistachio: "rgb(var(--color-pistachio) / <alpha-value>)",
+        strawberry: "rgb(var(--color-strawberry) / <alpha-value>)",
+        blueberry: "rgb(var(--color-blueberry) / <alpha-value>)",
+        cocoa: "rgb(var(--color-cocoa) / <alpha-value>)",
+        cone: "rgb(var(--color-cone) / <alpha-value>)",
+        saffron: "rgb(var(--color-saffron) / <alpha-value>)"
       },
       boxShadow: {
-        soft: "0 14px 38px rgba(91, 63, 51, 0.10)"
+        soft: "var(--shadow-soft)"
       }
     }
   },

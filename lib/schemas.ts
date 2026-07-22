@@ -73,3 +73,36 @@ export const dailySaleSchema = z.object({
   items: z.array(dailySaleItemSchema).min(1, "At least one item is required"),
 });
 
+export const supplierSchema = z.object({
+  id: z.string().optional(),
+  name: z.string().min(1, "Name is required"),
+  contactNumber: z.string().optional(),
+  gstNumber: z.string().optional(),
+  address: z.string().optional(),
+  paymentDue: z.coerce.number().min(0).default(0),
+});
+
+export const purchaseItemSchema = z.object({
+  productId: z.string().min(1, "Product is required"),
+  quantity: z.coerce.number().positive("Quantity must be positive"),
+  costPrice: z.coerce.number().min(0, "Cost price must be positive"),
+  mfgDate: z.coerce.date().optional(),
+  expiryDate: z.coerce.date().optional(),
+});
+
+export const purchaseSchema = z.object({
+  supplierId: z.string().min(1, "Supplier is required"),
+  invoiceNumber: z.string().min(1, "Invoice number is required"),
+  purchaseDate: z.coerce.date(),
+  note: z.string().optional(),
+  items: z.array(purchaseItemSchema).min(1, "At least one item is required"),
+});
+
+export const wastageSchema = z.object({
+  date: z.coerce.date(),
+  shopId: z.string().optional().nullable(),
+  productId: z.string().min(1, "Product is required"),
+  quantity: z.coerce.number().positive("Quantity must be positive"),
+  reason: z.string().optional(),
+  cost: z.coerce.number().min(0, "Cost must be positive"),
+});

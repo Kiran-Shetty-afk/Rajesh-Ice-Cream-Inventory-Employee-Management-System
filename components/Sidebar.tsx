@@ -9,8 +9,9 @@ import {
   BarChart3, Boxes, Building2, FileSpreadsheet, Home, 
   IceCreamCone, Settings, Truck, Users, IndianRupee, 
   Store, ShoppingCart, Trash2, Moon, Sun, ChevronLeft, ChevronRight,
-  Calendar
+  Calendar, LogOut
 } from "lucide-react";
+import { logout } from "@/app/actions/auth";
 import { NotificationBell } from "./NotificationBell";
 
 const items = [
@@ -118,9 +119,16 @@ export function Sidebar() {
         </div>
 
         {!isCollapsed && (
-          <div className="rounded-md border border-white/10 bg-white/5 p-3 text-xs text-white/75">
-            Local SQLite database with daily backup support.
-          </div>
+          <button
+            onClick={async () => {
+              await logout();
+              window.location.href = "/login";
+            }}
+            className="flex items-center justify-center gap-2 rounded-md bg-white/10 hover:bg-rose-500/80 p-2 text-sm text-white transition-colors"
+          >
+            <LogOut size={16} />
+            <span>Logout</span>
+          </button>
         )}
       </div>
     </aside>

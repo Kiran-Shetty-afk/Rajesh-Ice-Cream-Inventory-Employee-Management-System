@@ -28,21 +28,21 @@ export function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-body p-4">
-      <div className="w-full max-w-md bg-surface p-8 rounded-2xl shadow-xl border border-divider">
+    <div className="min-h-screen flex items-center justify-center bg-cream p-4">
+      <div className="w-full max-w-md surface-card p-8 shadow-soft">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mb-4">
+          <div className="w-16 h-16 bg-strawberry/10 text-strawberry rounded-full flex items-center justify-center mb-4">
             <Lock className="w-8 h-8" />
           </div>
-          <h1 className="text-2xl font-bold text-ink">Admin Login</h1>
-          <p className="text-ink-light text-center mt-2">
-            Enter your secure PIN to access the Enterprise ERP system.
+          <h1 className="text-2xl font-bold text-ink">Rajesh Ice Cream ERP</h1>
+          <p className="text-cocoa/70 text-center mt-2">
+            Enter your secure PIN to access the management system.
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-ink mb-1">
+            <label className="block text-sm font-medium text-ink mb-2">
               Security PIN
             </label>
             <input
@@ -50,7 +50,7 @@ export function LoginForm() {
               pattern="[0-9]*"
               inputMode="numeric"
               autoFocus
-              className="w-full px-4 py-3 bg-body border border-divider rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-ink text-center text-2xl tracking-widest"
+              className="w-full h-12 px-4 bg-vanilla/50 border border-cocoa/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-strawberry/50 focus:border-strawberry transition-all text-ink text-center text-2xl tracking-widest font-mono"
               value={pin}
               onChange={(e) => setPin(e.target.value)}
               placeholder="••••••"
@@ -59,7 +59,7 @@ export function LoginForm() {
           </div>
 
           {error && (
-            <div className="text-red-500 text-sm text-center bg-red-500/10 p-3 rounded-lg">
+            <div className="text-strawberry text-sm text-center bg-strawberry/10 p-3 rounded-lg font-medium border border-strawberry/20">
               {error}
             </div>
           )}
@@ -67,7 +67,7 @@ export function LoginForm() {
           <button
             type="submit"
             disabled={loading || !pin}
-            className="w-full bg-primary hover:bg-primary-hover text-white py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full h-12 bg-strawberry hover:bg-strawberry/90 text-white rounded-lg flex items-center justify-center gap-2 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
           >
             {loading ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

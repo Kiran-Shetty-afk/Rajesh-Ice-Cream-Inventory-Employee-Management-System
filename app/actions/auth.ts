@@ -14,7 +14,7 @@ export async function login(pin: string): Promise<{ success?: boolean; error?: s
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         path: "/",
-        maxAge: 60 * 60 * 24 * 7, // 1 week
+        maxAge: 60 * 60 * 24, // 1 day
       });
       return { success: true };
     } else {

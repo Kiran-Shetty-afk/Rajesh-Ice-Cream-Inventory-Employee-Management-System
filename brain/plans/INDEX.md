@@ -4,8 +4,8 @@
 
 | Field | Value |
 |------|-------|
-| Last Assigned ID | 006 |
-| Next ID | 007 |
+| Last Assigned ID | 007 |
+| Next ID | 008 |
 
 ## Ledger Rules
 
@@ -19,9 +19,9 @@
 
 | Category | Count |
 |----------|-------|
-| Active plans | 1 |
+| Active plans | 2 |
 | Completed | 2 |
-| **Total** | **3** |
+| **Total** | **4** |
 
 ## Completed Plans
 
@@ -37,6 +37,7 @@
 | ID | Title | Tier |
 |----|-------|------|
 | 005 | Project Enhancement and Feature Roadmap Options | dig-deep |
+| 007 | Production Release Final Sprint (Auth, Packaging, CRUD) | full-feature |
 
 ### Approved
 

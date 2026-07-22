@@ -4,8 +4,8 @@
 
 | Field | Value |
 |------|-------|
-| Last Assigned ID | 006 |
-| Next ID | 007 |
+| Last Assigned ID | 007 |
+| Next ID | 008 |
 
 ## Ledger Rules
 
@@ -19,9 +19,9 @@
 
 | Category | Count |
 |----------|-------|
-| Active issues | 0 |
+| Active issues | 1 |
 | Completed | 6 |
-| **Total** | **6** |
+| **Total** | **7** |
 
 ## Completed Issues
 
@@ -52,7 +52,7 @@
 
 | ID | Title |
 |----|-------|
-| _none_ | |
+| 007 | Nested ternary used for notification colors |
 
 ## Issue Structure
 

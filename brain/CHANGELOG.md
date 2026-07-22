@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## [2026-07-22] - Kenmark Issues Scan (Simplify Mode)
+- **Code Quality**: Performed a simplification audit pass. Discovered 1 nested ternary opportunity in `NotificationBell.tsx`. Recorded as Issue 007.
 ## [2026-07-22] - Issues Fixes (004, 005, 006)
 - **Performance**: Refactored static `echarts-for-react` imports to Next.js dynamic lazy-loading to massively reduce initial client bundle size.
 - **Backend**: Added explicit return types to notification server actions to prevent Client Component type mismatch.

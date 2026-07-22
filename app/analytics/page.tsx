@@ -1,10 +1,11 @@
+import React from "react";
 import { PageHeader } from "@/components/PageHeader";
 import { AnalyticsDashboard } from "@/components/AnalyticsDashboard";
 import { getAnalyticsData } from "@/lib/analytics";
 
 export const dynamic = "force-dynamic";
 
-export default async function AnalyticsPage() {
+export default async function AnalyticsPage(): Promise<React.ReactElement> {
   const data = await getAnalyticsData();
 
   return (

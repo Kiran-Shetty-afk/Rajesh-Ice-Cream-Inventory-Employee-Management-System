@@ -1,3 +1,4 @@
+import React from "react";
 import { PageHeader } from "@/components/PageHeader";
 import { prisma } from "@/lib/prisma";
 import { SalesDashboard } from "@/components/SalesDashboard";
@@ -5,7 +6,7 @@ import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
-export default async function SalesPage() {
+export default async function SalesPage(): Promise<React.ReactElement> {
   const [sales, shops, products] = await Promise.all([
     prisma.dailySale.findMany({
       include: {

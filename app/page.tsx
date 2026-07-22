@@ -1,3 +1,4 @@
+import React from "react";
 import { AlertTriangle, Boxes, IndianRupee, Package, Users } from "lucide-react";
 import { DashboardSummaryCharts } from "@/components/DashboardSummaryCharts";
 import { PageHeader } from "@/components/PageHeader";
@@ -8,7 +9,7 @@ import { money } from "@/lib/finance";
 
 export const dynamic = "force-dynamic";
 
-export default async function DashboardPage() {
+export default async function DashboardPage(): Promise<React.ReactElement> {
   const [{ totals, products, employees }, analyticsData] = await Promise.all([getDashboardData(), getAnalyticsData()]);
   const recentProducts = products.slice(0, 6);
   const recentEmployees = employees.slice(0, 5);

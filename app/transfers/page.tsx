@@ -1,3 +1,4 @@
+import React from "react";
 import { format } from "date-fns";
 import { PageHeader } from "@/components/PageHeader";
 import { prisma } from "@/lib/prisma";
@@ -5,7 +6,7 @@ import { TransferDialog } from "@/components/TransferForm";
 
 export const dynamic = "force-dynamic";
 
-export default async function TransfersPage() {
+export default async function TransfersPage(): Promise<React.ReactElement> {
   const [transfers, shops, products] = await Promise.all([
     prisma.stockTransfer.findMany({
       include: { shop: true, items: { include: { product: true } } },

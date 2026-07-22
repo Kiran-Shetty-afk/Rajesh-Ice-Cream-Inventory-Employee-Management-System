@@ -1,3 +1,4 @@
+import React from "react";
 import { PageHeader } from "@/components/PageHeader";
 import { money } from "@/lib/finance";
 import { prisma } from "@/lib/prisma";
@@ -7,7 +8,7 @@ import { Edit } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-export default async function InventoryPage() {
+export default async function InventoryPage(): Promise<React.ReactElement> {
   const [products, rawMaterials] = await Promise.all([
     prisma.product.findMany({ orderBy: { name: "asc" } }),
     prisma.rawMaterial.findMany({ orderBy: { name: "asc" } })

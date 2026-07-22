@@ -1,3 +1,4 @@
+import React from "react";
 import { DatabaseBackup, ShieldCheck } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { BackupButton } from "@/components/BackupButton";
@@ -6,7 +7,7 @@ import { format } from "date-fns";
 
 export const dynamic = "force-dynamic";
 
-export default async function SettingsPage() {
+export default async function SettingsPage(): Promise<React.ReactElement> {
   const latestBackup = await prisma.backupLog.findFirst({
     orderBy: { createdAt: "desc" }
   });

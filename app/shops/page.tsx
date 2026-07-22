@@ -1,3 +1,4 @@
+import React from "react";
 import { PageHeader } from "@/components/PageHeader";
 import { prisma } from "@/lib/prisma";
 import { ShopDialog } from "@/components/ShopForm";
@@ -5,7 +6,7 @@ import { Edit } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-export default async function ShopsPage() {
+export default async function ShopsPage(): Promise<React.ReactElement> {
   const shops = await prisma.shop.findMany({ include: { stocks: { include: { product: true } } }, orderBy: { name: "asc" } });
 
   return (

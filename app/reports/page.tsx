@@ -1,8 +1,9 @@
+import React from "react";
 import { PageHeader } from "@/components/PageHeader";
 import { ExportButtons } from "@/components/ExportButtons";
 import { reportCatalog } from "@/lib/reportCatalog";
 
-export default function ReportsPage() {
+export default function ReportsPage(): React.ReactElement {
   return (
     <>
       <PageHeader title="Reports" description="Professional inventory, transfer, valuation, raw material, employee, and time-period reports with print and CSV export." />

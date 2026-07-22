@@ -1,3 +1,4 @@
+import React from "react";
 import { PageHeader } from "@/components/PageHeader";
 import { money, salarySummary } from "@/lib/finance";
 import { prisma } from "@/lib/prisma";
@@ -7,7 +8,7 @@ import { Edit } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-export default async function EmployeesPage() {
+export default async function EmployeesPage(): Promise<React.ReactElement> {
   const employees = await prisma.employee.findMany({ include: { loans: true }, orderBy: { employeeCode: "asc" } });
 
   return (

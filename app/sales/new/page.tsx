@@ -1,3 +1,4 @@
+import React from "react";
 import { PageHeader } from "@/components/PageHeader";
 import { prisma } from "@/lib/prisma";
 import { DailySalesForm } from "@/components/DailySalesForm";
@@ -6,7 +7,7 @@ import { ArrowLeft } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-export default async function NewDailySalePage() {
+export default async function NewDailySalePage(): Promise<React.ReactElement> {
   const [shops, products] = await Promise.all([
     prisma.shop.findMany({
       include: { stocks: true },
